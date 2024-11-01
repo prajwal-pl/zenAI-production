@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/sidebar";
 import { UserButton } from "@clerk/nextjs";
 import { auth, currentUser, User } from "@clerk/nextjs/server";
+import Link from "next/link";
 
 // Menu items.
 const items = [
@@ -47,17 +48,17 @@ const items = [
 export async function AppSidebar() {
   const user = await currentUser();
   return (
-    <Sidebar>
+    <Sidebar className="bg-primary-foreground">
       <SidebarHeader>
         <div className="flex items-center justify-between px-2 pt-2.5">
-          <div className="flex items-center gap-2">
+          <Link href="/" className="flex items-center gap-2">
             <img
               src="/logo.svg"
               alt="Zen AI"
               className="w-6 h-6 rounded-full"
             />
             <span className="font-bold">Zen AI</span>
-          </div>
+          </Link>
         </div>
       </SidebarHeader>
       <SidebarContent>

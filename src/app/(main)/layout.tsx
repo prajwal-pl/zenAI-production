@@ -25,8 +25,8 @@ const RootLayout = ({ children }: Props) => {
 
 const Navbar = () => {
   return (
-    <nav className="w-full bg-secondary backdrop-blur dark:bg-sidebar">
-      <div className="flex h-16 items-center justify-between px-3 md:px-6">
+    <nav className="w-full  backdrop-blur ">
+      <div className="flex bg-primary-foreground h-16 items-center justify-between px-3 md:px-6">
         {/* Left section */}
         <div className="flex items-center gap-2 md:gap-4">
           <SidebarTrigger className="" />
@@ -49,7 +49,7 @@ const Searchbar = () => {
       <input
         type="text"
         placeholder="Search..."
-        className="w-full dark:bg-sidebar h-10 text-xs pl-10 pr-4 rounded-lg border border-gray-500  bg-white focus:outline-none focus:border-blue-500"
+        className="w-full bg-primary-foreground h-10 text-xs pl-10 pr-4 rounded-lg border border-gray-500 focus:outline-none focus:border-blue-500"
       />
       <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
     </div>
