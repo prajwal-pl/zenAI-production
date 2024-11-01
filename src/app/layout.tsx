@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { SidebarProvider } from "@/components/ui/sidebar";
+import { ThemeProvider } from "@/components/theme-provider";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -17,7 +18,8 @@ const geistMono = localFont({
 
 export const metadata: Metadata = {
   title: "Zen AI",
-  description: "An AI platform for speedreading PDfs",
+  description: "An AI mock interview generator",
+  icons: "/logo.svg",
 };
 
 export default function RootLayout({
@@ -31,7 +33,14 @@ export default function RootLayout({
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
-          <SidebarProvider>{children}</SidebarProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <SidebarProvider>{children}</SidebarProvider>
+          </ThemeProvider>
         </body>
       </html>
     </ClerkProvider>

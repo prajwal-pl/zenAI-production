@@ -7,6 +7,7 @@ import {
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
+  SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
@@ -47,11 +48,20 @@ export async function AppSidebar() {
   const user = await currentUser();
   return (
     <Sidebar>
+      <SidebarHeader>
+        <div className="flex items-center justify-between px-2 pt-2.5">
+          <div className="flex items-center gap-2">
+            <img
+              src="/logo.svg"
+              alt="Zen AI"
+              className="w-6 h-6 rounded-full"
+            />
+            <span className="font-bold">Zen AI</span>
+          </div>
+        </div>
+      </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel className="font-bold text-lg">
-            Zen
-          </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (
