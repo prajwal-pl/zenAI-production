@@ -12,7 +12,6 @@ type Props = {
 };
 
 const Page = ({ params }: Props) => {
-  // console.log(params.interviewId);
   return (
     <div className="p-4">
       <div>
