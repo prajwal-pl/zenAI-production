@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/dialog";
 import { FormEventHandler, useState } from "react";
 import { InterviewGeneration, saveQuestions } from "./actions";
+import { useRouter } from "next/navigation";
 
 const Page = () => {
   const [inputs, setInputs] = useState({
@@ -18,6 +19,8 @@ const Page = () => {
     jobDescription: "",
     experience: 0,
   });
+
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -39,7 +42,9 @@ const Page = () => {
       console.error(data.error);
       return;
     } else if (data.response) {
-      await saveQuestions(data.response, inputs);
+      const mockId = await saveQuestions(data.response, inputs);
+      console.log(mockId);
+      router.push(`/dashboard/interview/${mockId?.response?.[0]?.mockId}`);
     }
   };
   return (
