@@ -10,6 +10,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { FormEventHandler, useState } from "react";
+import { InterviewGeneration, saveQuestions } from "./actions";
 
 const Page = () => {
   const [inputs, setInputs] = useState({
@@ -18,9 +19,28 @@ const Page = () => {
     experience: 0,
   });
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log(inputs);
+
+    if (!inputs.jobRole || !inputs.jobDescription || !inputs.experience) {
+      return;
+    }
+
+    setInputs({
+      jobRole: "",
+      jobDescription: "",
+      experience: 0,
+    });
+
+    const data = await InterviewGeneration({ inputs });
+    // console.log(data.response);
+    if (data.error) {
+      console.error(data.error);
+      return;
+    } else if (data.response) {
+      await saveQuestions(data.response, inputs);
+    }
   };
   return (
     <div className="p-4">
@@ -55,6 +75,7 @@ const Page = () => {
                   <label className="text-sm font-bold">Job Role</label>
                   <input
                     value={inputs.jobRole}
+                    required
                     onChange={(e) =>
                       setInputs({ ...inputs, jobRole: e.target.value })
                     }
@@ -66,6 +87,7 @@ const Page = () => {
                 <div>
                   <label className="text-sm font-bold">Job Description</label>
                   <input
+                    required
                     value={inputs.jobDescription}
                     onChange={(e) =>
                       setInputs({ ...inputs, jobDescription: e.target.value })
@@ -78,6 +100,8 @@ const Page = () => {
                 <div>
                   <label className="text-sm font-bold">Experience</label>
                   <input
+                    value={inputs.experience === 0 ? "" : inputs.experience}
+                    required
                     onChange={(e) =>
                       setInputs({
                         ...inputs,
@@ -89,7 +113,7 @@ const Page = () => {
                     className="w-full h-10 px-4 rounded-lg border border-gray-500 focus:outline-none focus:border-blue-500"
                   />
                 </div>
-                <Button type="submit">Submit</Button>
+                <Button type="submit">Generate AI Interview</Button>
               </form>
             </div>
           </DialogContent>
@@ -97,10 +121,6 @@ const Page = () => {
       </div>
     </div>
   );
-};
-
-const AddInterview = () => {
-  return <div className="p-4"></div>;
 };
 
 export default Page;
