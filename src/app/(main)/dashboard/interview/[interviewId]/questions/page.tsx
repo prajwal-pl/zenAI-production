@@ -1,5 +1,4 @@
 // page.tsx (Server Component)
-import Questions from "./components/Questions";
 import { getQuestionData } from "./actions";
 import QuestionClient from "./components/QuestionClient";
 
@@ -13,7 +12,9 @@ async function Page({
 }) {
   const questions = await getQuestionData(params.interviewId);
 
-  return <QuestionClient initialQuestions={questions} />;
+  return (
+    <QuestionClient mockId={params.interviewId} initialQuestions={questions} />
+  );
 }
 
 export default Page;

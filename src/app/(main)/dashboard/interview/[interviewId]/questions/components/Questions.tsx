@@ -1,14 +1,12 @@
-import { Button } from "@/components/ui/button";
 import { Lightbulb } from "lucide-react";
 import React from "react";
 
 type Props = {
   questions: any[];
   activeIndex: number;
-  setActiveIndex: (index: number) => void;
 };
 
-const Questions = ({ questions, activeIndex, setActiveIndex }: Props) => {
+const Questions = ({ questions, activeIndex }: Props) => {
   console.log(questions);
   return (
     <div>
@@ -42,29 +40,6 @@ const Questions = ({ questions, activeIndex, setActiveIndex }: Props) => {
             ensure better response transcription.
           </p>
         </div>
-      </div>
-      <div className="flex gap-2 items-center justify-center my-3">
-        <Button
-          disabled={activeIndex === 0}
-          onClick={() => {
-            setActiveIndex(activeIndex - 1);
-          }}
-          className="w-full"
-        >
-          Previous Question
-        </Button>
-        {activeIndex + 1 >= 5 ? (
-          <Button className="w-full">End Interview</Button>
-        ) : (
-          <Button
-            onClick={() => {
-              setActiveIndex(activeIndex + 1);
-            }}
-            className="w-full"
-          >
-            Next Question
-          </Button>
-        )}
       </div>
     </div>
   );

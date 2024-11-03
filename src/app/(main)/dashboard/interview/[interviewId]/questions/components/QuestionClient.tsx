@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Questions from "./Questions";
 import dynamic from "next/dynamic";
+import { Button } from "@/components/ui/button";
 
 const VideoCam = dynamic(() => import("./VideoCam"), {
   ssr: false,
@@ -10,9 +11,10 @@ const VideoCam = dynamic(() => import("./VideoCam"), {
 
 type Props = {
   initialQuestions: any[];
+  mockId: string;
 };
 
-const QuestionClient = ({ initialQuestions }: Props) => {
+const QuestionClient = ({ initialQuestions, mockId }: Props) => {
   const [questions] = useState(initialQuestions);
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -23,12 +25,37 @@ const QuestionClient = ({ initialQuestions }: Props) => {
         <p className="text-muted-foreground">Good luck!</p>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3 p-4">
-        <Questions
-          setActiveIndex={setActiveIndex}
+        <div>
+          <Questions activeIndex={activeIndex} questions={questions} />
+          <div className="flex gap-2 items-center justify-center my-3">
+            <Button
+              disabled={activeIndex === 0}
+              onClick={() => {
+                setActiveIndex(activeIndex - 1);
+              }}
+              className="w-full"
+            >
+              Previous Question
+            </Button>
+            {activeIndex + 1 >= 5 ? (
+              <Button className="w-full">End Interview</Button>
+            ) : (
+              <Button
+                onClick={() => {
+                  setActiveIndex(activeIndex + 1);
+                }}
+                className="w-full"
+              >
+                Next Question
+              </Button>
+            )}
+          </div>
+        </div>
+        <VideoCam
+          mockId={mockId}
           activeIndex={activeIndex}
           questions={questions}
         />
-        <VideoCam questions={questions} />
       </div>
     </div>
   );

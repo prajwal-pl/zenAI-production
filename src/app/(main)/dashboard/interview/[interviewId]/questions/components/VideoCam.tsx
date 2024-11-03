@@ -2,17 +2,19 @@
 import { Button } from "@/components/ui/button";
 import { MicIcon, MicOff, Video, VideoOff, WebcamIcon } from "lucide-react";
 import React, { useCallback, useEffect, useState } from "react";
-import useSpeechToText from "react-hook-speech-to-text";
 import Webcam from "react-webcam";
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
+import { saveUserResponse } from "../actions";
 
 type Props = {
   questions: any[];
+  activeIndex: number;
+  mockId: string;
 };
 
-const VideoCam = ({ questions }: Props) => {
+const VideoCam = ({ questions, activeIndex, mockId }: Props) => {
   const [enableWebcam, setEnableWebcam] = React.useState(false);
   const [isRecording, setIsRecording] = useState(false);
   const [transcripts, setTranscripts] = useState<string[]>([]);
@@ -23,12 +25,7 @@ const VideoCam = ({ questions }: Props) => {
     browserSupportsSpeechRecognition,
   } = useSpeechRecognition();
 
-  useEffect(() => {
-    if (transcript) {
-      setTranscripts((prev) => [...prev, transcript]);
-      console.log(transcripts);
-    }
-  }, [transcript]);
+  const currentQuestion = questions[activeIndex]?.question;
 
   const handleRecording = useCallback(() => {
     if (!isRecording) {
@@ -37,13 +34,15 @@ const VideoCam = ({ questions }: Props) => {
     } else {
       setIsRecording(false);
       SpeechRecognition.stopListening();
+      if (transcript.length > 10 && currentQuestion) {
+        saveUserResponse(currentQuestion, transcript, mockId);
+      }
     }
-  }, [isRecording]);
+  }, [isRecording, transcript, currentQuestion]);
 
   if (!browserSupportsSpeechRecognition) {
     return <span>Browser doesn't support speech recognition.</span>;
   }
-
   return (
     <div className="flex items-center justify-center flex-col">
       <div className="p-5 border rounded-lg">
@@ -95,7 +94,6 @@ const VideoCam = ({ questions }: Props) => {
           </div>
         )}
       </Button>
-      <p>{transcript}</p>
     </div>
   );
 };
