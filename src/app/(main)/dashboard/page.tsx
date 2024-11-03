@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
+import { Loader2, Plus } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -9,7 +9,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { FormEventHandler, useState } from "react";
+import { useState } from "react";
 import { InterviewGeneration, saveQuestions } from "./actions";
 import { useRouter } from "next/navigation";
 
@@ -19,10 +19,12 @@ const Page = () => {
     jobDescription: "",
     experience: 0,
   });
+  const [loading, setLoading] = useState(false);
 
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    setLoading(true);
     e.preventDefault();
     console.log(inputs);
 
@@ -40,10 +42,12 @@ const Page = () => {
     // console.log(data.response);
     if (data.error) {
       console.error(data.error);
+      setLoading(false);
       return;
     } else if (data.response) {
       const mockId = await saveQuestions(data.response, inputs);
       console.log(mockId);
+      setLoading(false);
       router.push(`/dashboard/interview/${mockId?.response?.[0]?.mockId}`);
     }
   };
@@ -118,7 +122,16 @@ const Page = () => {
                     className="w-full h-10 px-4 rounded-lg border border-gray-500 focus:outline-none focus:border-blue-500"
                   />
                 </div>
-                <Button type="submit">Generate AI Interview</Button>
+                <Button type="submit">
+                  {loading ? (
+                    <div className="flex items-center gap-2">
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      Generating
+                    </div>
+                  ) : (
+                    "Generate AI Interview"
+                  )}
+                </Button>
               </form>
             </div>
           </DialogContent>
