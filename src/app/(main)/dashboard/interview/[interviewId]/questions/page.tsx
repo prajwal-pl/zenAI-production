@@ -1,29 +1,19 @@
-import React from "react";
+// page.tsx (Server Component)
+import Questions from "./components/Questions";
 import { getQuestionData } from "./actions";
+import QuestionClient from "./components/QuestionClient";
 
-const Page = async ({
+// Make this async server component
+async function Page({
   params,
 }: {
   params: {
     interviewId: string;
   };
-}) => {
+}) {
   const questions = await getQuestionData(params.interviewId);
-  return (
-    <div>
-      <div>
-        <h1 className="text-3xl font-bold">Questions</h1>
-        <p className="text-muted-foreground">Good luck!</p>
-      </div>
-      <div>
-        {questions.map((question: any, index: number) => (
-          <p>
-            Question #{index + 1}: {question.question}
-          </p>
-        ))}
-      </div>
-    </div>
-  );
-};
+
+  return <QuestionClient initialQuestions={questions} />;
+}
 
 export default Page;

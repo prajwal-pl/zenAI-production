@@ -1,9 +1,21 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Lightbulb } from "lucide-react";
+import { Lightbulb, Video, VideoOff, WebcamIcon } from "lucide-react";
 import Link from "next/link";
+import { useState } from "react";
 import Webcam from "react-webcam";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 type Props = {
   params: {
@@ -12,6 +24,7 @@ type Props = {
 };
 
 const Page = ({ params }: Props) => {
+  const [enableWebcam, setEnableWebcam] = useState(false);
   return (
     <div className="p-4">
       <div>
@@ -48,17 +61,78 @@ const Page = ({ params }: Props) => {
               <strong>NOTE: We do not store your video information.</strong>
             </p>
           </div>
-          <Link href={`/dashboard/interview/${params.interviewId}/questions`}>
-            <Button className="w-full">Start Interview</Button>
-          </Link>
+          {enableWebcam ? (
+            <Link href={`/dashboard/interview/${params.interviewId}/questions`}>
+              <Button className="w-full">Start Interview</Button>
+            </Link>
+          ) : (
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button className="w-full">Start Interview</Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    You have not enabled your video for this interview. Would
+                    you like to continue with the interview off camera?
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogAction>
+                    <Link
+                      href={`/dashboard/interview/${params.interviewId}/questions`}
+                    >
+                      Start
+                    </Link>
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+          )}
+
+          {!enableWebcam ? (
+            <Button
+              onClick={() => {
+                setEnableWebcam(true);
+              }}
+              className="w-full my-3"
+            >
+              Switch on
+              <Video className="w-4 h-4 ml-2" />
+            </Button>
+          ) : (
+            <Button
+              onClick={() => {
+                setEnableWebcam(false);
+              }}
+              className="w-full my-3"
+            >
+              Switch off
+              <VideoOff className="w-4 h-4 ml-2" />
+            </Button>
+          )}
         </div>
         <div>
-          <Webcam
-            audioConstraints={true}
-            videoConstraints={true}
-            className="rounded-lg"
-            mirrored
-          />
+          {enableWebcam ? (
+            <Webcam
+              onUserMedia={() => {
+                setEnableWebcam(true);
+              }}
+              onUserMediaError={() => {
+                setEnableWebcam(false);
+              }}
+              audioConstraints={true}
+              videoConstraints={true}
+              className="rounded-lg"
+              mirrored
+            />
+          ) : (
+            <div className="flex items-center justify-center rounded-lg bg-secondary w-full h-full ">
+              <WebcamIcon className="w-24 h-24" />
+            </div>
+          )}
         </div>
       </div>
     </div>

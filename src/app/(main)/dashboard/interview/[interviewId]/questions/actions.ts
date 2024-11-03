@@ -11,6 +11,11 @@ export const getQuestionData = async (mockId: string) => {
       .select()
       .from(mockInterview)
       .where(eq(mockInterview.mockId, mockId));
+
+    if (!questions || questions.length === 0) {
+      throw new Error("No questions found");
+    }
+
     const JsonQuestions = JSON.parse(questions[0].jsonMockResp);
     return JsonQuestions;
   } catch (error: any) {
