@@ -5,7 +5,6 @@ import { mockInterview, userResponse } from "@/lib/db/schema";
 import { auth } from "@clerk/nextjs/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { eq } from "drizzle-orm";
-import { PgTable } from "drizzle-orm/pg-core";
 
 export const getQuestionData = async (mockId: string) => {
   try {

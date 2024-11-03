@@ -4,6 +4,7 @@ import { useState } from "react";
 import Questions from "./Questions";
 import dynamic from "next/dynamic";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
 const VideoCam = dynamic(() => import("./VideoCam"), {
   ssr: false,
@@ -17,6 +18,8 @@ type Props = {
 const QuestionClient = ({ initialQuestions, mockId }: Props) => {
   const [questions] = useState(initialQuestions);
   const [activeIndex, setActiveIndex] = useState(0);
+
+  const router = useRouter();
 
   return (
     <div>
@@ -38,7 +41,16 @@ const QuestionClient = ({ initialQuestions, mockId }: Props) => {
               Previous Question
             </Button>
             {activeIndex + 1 >= 5 ? (
-              <Button className="w-full">End Interview</Button>
+              <Button
+                onClick={() => {
+                  router.push(
+                    `/dashboard/interview/${mockId}/questions/feedback`
+                  );
+                }}
+                className="w-full"
+              >
+                End Interview
+              </Button>
             ) : (
               <Button
                 onClick={() => {
