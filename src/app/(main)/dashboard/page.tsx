@@ -148,6 +148,13 @@ const Page = () => {
   );
 };
 
+type Interview = {
+  jobRole: string;
+  jobDescription: string;
+  experience: string;
+  mockId: string;
+};
+
 const InterviewList = ({ interview }: { interview: any }) => {
   const router = useRouter();
   return (
