@@ -10,7 +10,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useState } from "react";
-import { InterviewGeneration, saveQuestions } from "./actions";
+import { getInterviews, InterviewGeneration, saveQuestions } from "./actions";
 import { useRouter } from "next/navigation";
 
 const Page = () => {
@@ -22,6 +22,8 @@ const Page = () => {
   const [loading, setLoading] = useState(false);
 
   const router = useRouter();
+
+  const allInterviews = getInterviews();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     setLoading(true);
@@ -137,8 +139,40 @@ const Page = () => {
           </DialogContent>
         </Dialog>
       </div>
+      <div>
+        <h1 className="text-2xl font-semibold my-4">Your Mock Interviews</h1>
+
+        <InterviewList interview={allInterviews} />
+      </div>
     </div>
   );
 };
 
+const InterviewList = ({ interview }: { interview: any }) => {
+  const router = useRouter();
+  return (
+    <div>
+      {interview?.map((data: any, index: number) => (
+        <div key={index} className="p-4 border rounded-lg my-2">
+          <h2 className="text-xl font-semibold">{data?.jobRole}</h2>
+          <p className="text-muted-foreground">{data?.jobDescription}</p>
+          <p className="text-muted-foreground">
+            Experience: {data?.experience}
+          </p>
+          <div className="flex gap-2">
+            <Button
+              onClick={() => {
+                router.push(`/dashboard/interview/${data?.mockId}`);
+              }}
+              variant={"outline"}
+            >
+              View Interview
+            </Button>
+            <Button variant={"outline"}>Delete Interview</Button>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+};
 export default Page;

@@ -79,3 +79,17 @@ export const saveQuestions = async (
     return { error: error.message };
   }
 };
+
+export const getInterviews = async () => {
+  try {
+    const interviews = await db.select().from(mockInterview);
+
+    if (!interviews || interviews.length === 0) {
+      throw new Error("No interviews found");
+    }
+
+    return interviews;
+  } catch (error: any) {
+    console.error(error);
+  }
+};

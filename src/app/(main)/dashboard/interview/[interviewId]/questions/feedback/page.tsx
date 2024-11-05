@@ -20,7 +20,7 @@ const page = async ({ params }: Props) => {
       </div>
       <div className="p-5 ">
         <div className="border rounded-lg">
-          {feedbackData &&
+          {feedbackData ? (
             feedbackData?.map((data: any, index: number) => (
               <div key={index} className="p-5 space-y-5">
                 <p className="text-xl">Question Count {index + 1}</p>
@@ -46,7 +46,12 @@ const page = async ({ params }: Props) => {
                   </span>
                 </div>
               </div>
-            ))}
+            ))
+          ) : (
+            <p className="text-xl text-center flex items-center justify-center">
+              No feedback data available
+            </p>
+          )}
         </div>
       </div>
     </div>
