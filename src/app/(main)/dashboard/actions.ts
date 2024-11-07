@@ -4,6 +4,7 @@ import { db } from "@/lib/db";
 import { mockInterview } from "@/lib/db/schema";
 import { auth } from "@clerk/nextjs/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import { eq } from "drizzle-orm";
 
 export const InterviewGeneration = async ({
   inputs,
@@ -81,14 +82,20 @@ export const saveQuestions = async (
 };
 
 export const getInterviews = async () => {
+  const { userId } = await auth();
+
   try {
-    const interviews = await db.select().from(mockInterview);
+    if (userId) {
+      const interviews = await db
+        .select()
+        .from(mockInterview)
+        .where(eq(mockInterview.createdBy, userId));
+      if (!interviews || interviews.length === 0) {
+        throw new Error("No interviews found");
+      }
 
-    if (!interviews || interviews.length === 0) {
-      throw new Error("No interviews found");
+      return interviews;
     }
-
-    return interviews;
   } catch (error: any) {
     console.error(error);
   }

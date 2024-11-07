@@ -1,4 +1,3 @@
-// components/QuestionClient.tsx (Client Component)
 "use client";
 import { useState } from "react";
 import Questions from "./Questions";

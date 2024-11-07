@@ -1,5 +1,6 @@
 import React from "react";
 import { getFeedbackData } from "./actions";
+import { Info } from "lucide-react";
 
 type Props = {
   params: {
@@ -48,7 +49,8 @@ const page = async ({ params }: Props) => {
               </div>
             ))
           ) : (
-            <p className="text-xl text-center flex items-center justify-center">
+            <p className="text-xl md:text-2xl text-center flex items-center justify-center h-screen gap-2">
+              <Info />
               No feedback data available
             </p>
           )}
