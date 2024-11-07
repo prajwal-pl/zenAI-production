@@ -56,11 +56,11 @@ const Page = () => {
 
     const data = await InterviewGeneration({ inputs });
     // console.log(data.response);
-    if (data.error) {
-      console.error(data.error);
+    if (!data) {
+      console.log("Data not found!");
       setLoading(false);
       return;
-    } else if (data.response) {
+    } else if (data?.response) {
       const mockId = await saveQuestions(data.response, inputs);
       console.log(mockId);
       setLoading(false);

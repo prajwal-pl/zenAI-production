@@ -19,7 +19,7 @@ export const getQuestionData = async (mockId: string) => {
 
     const JsonQuestions = JSON.parse(questions[0].jsonMockResp);
     return JsonQuestions;
-  } catch (error: any) {
+  } catch (error) {
     console.error(error);
   }
 };
@@ -51,14 +51,14 @@ export const saveUserResponse = async (
       .replace("```", "");
     const AIResponse = JSON.parse(data);
 
-    const Response = await db.insert(userResponse).values({
+    await db.insert(userResponse).values({
       mockRef: mockId || "",
       feedback: AIResponse?.feedback || "",
       rating: AIResponse?.rating || "",
       userId: userId || "",
       response: answer || "",
     });
-  } catch (error: any) {
+  } catch (error) {
     console.error(error);
   }
 };
